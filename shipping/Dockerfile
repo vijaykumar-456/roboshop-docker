@@ -1,5 +1,5 @@
 FROM maven:3.9.16
-WORKDIR /app/
+WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 RUN mvn clean package 
