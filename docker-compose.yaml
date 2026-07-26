@@ -6,6 +6,25 @@ services:
     container_name: mongodb #docker run -d learndevopskills/mongodv:4.0.0
     volumes:
       - mongodb:/data/db #mongodb will stores the mongodb data in /data/db directory
+  mysql:
+    build: ./mysql
+    image: learndevopskills/mysql:v1
+    container_name: mysql
+    command: --mysql-native-password=ON --innodb-lock_wait_timeout=120
+    environment:
+      MYSQL_ROOT_PASSWORD: "RoboShop@1"
+    volumes:
+      - mysql:/var/lib/mysql
+  
+  rabbitmq:
+    image: learndevopskills/rabbitmq:v1
+    container_name: rabbitmq:v1
+    environment:
+      RABBITMQ_DEFAULT_USER: roboshop
+      RABBITMQ_DEFAULT_PASS: roboshop123
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+
 
   catalogue:
     build: ./catalogue
@@ -28,6 +47,46 @@ services:
   redis:
     image: redis:7
     container_name: redis  #docker run -d --name redis --network roboshop redis:7
+  
+  cart:
+    build: ./cart
+    image: learndevopskills/cart:v1
+    container_name: cart
+    depends_on:
+      - redis
+      - catalogue
+    environment:
+      REDIS_HOST: redis
+      CATALOGUE_HOST: catalogue
+      CATALOGUE_PORT: 8080
+    
+  shipping:
+    build: ./shipping
+    image: learndevopskills/shipping:v1
+    container_name: shipping
+    depends_on:
+      - redis
+      - cart
+    environment:
+      CART_ENDPOINT: cart:8080
+      DB_HOST: mysql
+  
+  payment:
+    build: ./payment
+    image: learndevopskills/payment:v1
+    container_name: payment
+    depends_on:
+      - cart
+      - user
+      - rabbitmq
+    environment:
+      CART_HOST: cart
+      CART_PORT: 8080
+      USER_HOST: user
+      USER_PORT: 8080
+      AMQP_HOST: rabbitmq
+      AMQP_USER: roboshop
+      AMQP_PASS: roboshop123
 
   frontend:
     build: ./frontend
@@ -40,6 +99,9 @@ services:
 
 volumes:
   mongodb: # docker volume create mongodb
+  mysql: 
+  rabbitmq:
+  redis:
 
 networks:
   default: #which means all the services in the yaml file will use same network
