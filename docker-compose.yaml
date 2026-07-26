@@ -1,0 +1,30 @@
+name: roboshop
+services:
+  mongodb:
+    build: ./mongodb
+    image: learndevopskills/mongodb:4.0.0 # docker build -t learndevopskills/mongodv:4.0.0
+    container_name: mongodb #docker run -d learndevopskills/mongodv:4.0.0
+    volumes:
+      -mongodb: /data/db #mongodb will stores the mongodb data in /data/db directory
+
+  catalogue:
+    build: ./catalogue
+    image: learndevopskills/catalogue:4.0.0
+    container_name: catalogue
+    depends_on:
+      - mongodb
+  
+  frontend:
+    build: ./frontend
+    image: learndevopskills/frontend:4.0.0
+    container_name: frontend
+    depends_on:
+      - catalogue
+
+volumes:
+  mongodb: # docker volume create mongodb
+networks:
+  default: #which means all the services in the yaml file will use same network
+    name: roboshop
+    driver: bridge
+    external: false
