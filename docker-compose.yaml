@@ -96,6 +96,10 @@ services:
     container_name: frontend
     depends_on:
       - catalogue
+      - cart
+      - shipping
+      - user
+      - payment
     ports:
       - "80:80"
 
