@@ -20,6 +20,8 @@ services:
     container_name: frontend
     depends_on:
       - catalogue
+    ports:
+      - "80:80"
 
 volumes:
   mongodb: # docker volume create mongodb
