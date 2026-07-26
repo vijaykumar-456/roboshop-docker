@@ -17,13 +17,17 @@ services:
       - mysql:/var/lib/mysql
   
   rabbitmq:
-    image: learndevopskills/rabbitmq:v1
+    image: rabbitmq:3
     container_name: rabbitmq:v1
     environment:
       RABBITMQ_DEFAULT_USER: roboshop
       RABBITMQ_DEFAULT_PASS: roboshop123
     volumes:
       - rabbitmq:/var/lib/rabbitmq
+  
+  redis:
+    image: redis:7
+    container_name: redis  #docker run -d --name redis --network roboshop redis:7
 
 
   catalogue:
@@ -44,9 +48,7 @@ services:
       MONGO: true
       REDIS_URL: 'redis://redis:6379'
       MONGO_URL: "mongodb://mongodb:27017/users"
-  redis:
-    image: redis:7
-    container_name: redis  #docker run -d --name redis --network roboshop redis:7
+ 
   
   cart:
     build: ./cart
