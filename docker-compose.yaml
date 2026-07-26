@@ -5,7 +5,7 @@ services:
     image: learndevopskills/mongodb:4.0.0 # docker build -t learndevopskills/mongodv:4.0.0
     container_name: mongodb #docker run -d learndevopskills/mongodv:4.0.0
     volumes:
-      -mongodb:/data/db #mongodb will stores the mongodb data in /data/db directory
+      - mongodb:/data/db #mongodb will stores the mongodb data in /data/db directory
 
   catalogue:
     build: ./catalogue
@@ -25,6 +25,7 @@ services:
 
 volumes:
   mongodb: # docker volume create mongodb
+
 networks:
   default: #which means all the services in the yaml file will use same network
     name: roboshop
