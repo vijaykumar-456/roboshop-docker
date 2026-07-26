@@ -67,7 +67,7 @@ services:
     image: learndevopskills/shipping:v1
     container_name: shipping
     depends_on:
-      - redis
+      - mysql
       - cart
     environment:
       CART_ENDPOINT: cart:8080
