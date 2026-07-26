@@ -2,21 +2,36 @@ name: roboshop
 services:
   mongodb:
     build: ./mongodb
-    image: learndevopskills/mongodb:4.0.0 # docker build -t learndevopskills/mongodv:4.0.0
+    image: learndevopskills/mongodb:v1 # docker build -t learndevopskills/mongodv:4.0.0
     container_name: mongodb #docker run -d learndevopskills/mongodv:4.0.0
     volumes:
       - mongodb:/data/db #mongodb will stores the mongodb data in /data/db directory
 
   catalogue:
     build: ./catalogue
-    image: learndevopskills/catalogue:4.0.0
+    image: learndevopskills/catalogue:v1
     container_name: catalogue
     depends_on:
       - mongodb
   
+  user:
+    build: ./user
+    image: learndevopskills/user:v1
+    container_name: user
+    depends_on:
+      - redis
+      - mongodb
+    environment:
+      - MONGO: true
+      - REDIS_URL: 'redis://redis:6379'
+      - MONGO_URL: "mongodb://mongodb:27017/users"
+  redis:
+    build: redis:7
+    container_name: redis  #docker run -d --name redis --network roboshop redis:7
+
   frontend:
     build: ./frontend
-    image: learndevopskills/frontend:4.0.0
+    image: learndevopskills/frontend:v1
     container_name: frontend
     depends_on:
       - catalogue
