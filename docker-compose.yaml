@@ -10,7 +10,7 @@ services:
     build: ./mysql
     image: learndevopskills/mysql:v1
     container_name: mysql
-    command: --mysql-native-password=ON --innodb-lock_wait_timeout=120
+    command: --innodb-lock_wait_timeout=120
     environment:
       MYSQL_ROOT_PASSWORD: "RoboShop@1"
     volumes:
@@ -70,7 +70,7 @@ services:
       - mysql
       - cart
     environment:
-      CART_ENDPOINT: cart:8080
+      CART_ENDPOINT: "cart:8080"
       DB_HOST: mysql
   
   payment:
