@@ -27,7 +27,9 @@ services:
   
   redis:
     image: redis:7
-    container_name: redis  #docker run -d --name redis --network roboshop redis:7
+    container_name: redis
+  volumes:
+    - redis:/data  #docker run -d --name redis --network roboshop redis:7
 
 
   catalogue:
