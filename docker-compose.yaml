@@ -2,13 +2,13 @@ name: roboshop
 services:
   mongodb:
     build: ./mongodb
-    image: learndevopskills/mongodb:v1 # docker build -t learndevopskills/mongodv:4.0.0
+    image: learndevopskills/mongodb:4.0.0 # docker build -t learndevopskills/mongodv:4.0.0
     container_name: mongodb #docker run -d learndevopskills/mongodv:4.0.0
     volumes:
       - mongodb:/data/db #mongodb will stores the mongodb data in /data/db directory
   mysql:
     build: ./mysql
-    image: learndevopskills/mysql:v1
+    image: learndevopskills/mysql:4.0.0
     container_name: mysql
     command: --innodb-lock_wait_timeout=120
     environment:
@@ -28,20 +28,20 @@ services:
   redis:
     image: redis:7
     container_name: redis
-  volumes:
-    - redis:/data  #docker run -d --name redis --network roboshop redis:7
+    volumes:
+      - redis:/data  #docker run -d --name redis --network roboshop redis:7
 
 
   catalogue:
     build: ./catalogue
-    image: learndevopskills/catalogue:v1
+    image: learndevopskills/catalogue:4.0.0
     container_name: catalogue
     depends_on:
       - mongodb
   
   user:
     build: ./user
-    image: learndevopskills/user:v1
+    image: learndevopskills/user:4.0.0
     container_name: user
     depends_on:
       - redis
@@ -54,7 +54,7 @@ services:
   
   cart:
     build: ./cart
-    image: learndevopskills/cart:v1
+    image: learndevopskills/cart:4.0.0
     container_name: cart
     depends_on:
       - redis
@@ -66,7 +66,7 @@ services:
     
   shipping:
     build: ./shipping
-    image: learndevopskills/shipping:v1
+    image: learndevopskills/shipping:4.0.0
     container_name: shipping
     depends_on:
       - mysql
@@ -77,7 +77,7 @@ services:
   
   payment:
     build: ./payment
-    image: learndevopskills/payment:v1
+    image: learndevopskills/payment:4.0.0
     container_name: payment
     depends_on:
       - cart
@@ -94,7 +94,7 @@ services:
 
   frontend:
     build: ./frontend
-    image: learndevopskills/frontend:v1
+    image: learndevopskills/frontend:4.0.0
     container_name: frontend
     depends_on:
       - catalogue
